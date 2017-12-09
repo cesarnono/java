@@ -1,0 +1,154 @@
+CREATE DATABASE  IF NOT EXISTS `salikadb` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `salikadb`;
+-- MySQL dump 10.13  Distrib 5.5.16, for Win32 (x86)
+--
+-- Host: localhost    Database: salikadb
+-- ------------------------------------------------------
+-- Server version	5.5.27-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `tarea`
+--
+
+DROP TABLE IF EXISTS `tarea`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tarea` (
+  `tare_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tare_codigo` varchar(45) NOT NULL,
+  `tare_descripcion` varchar(300) NOT NULL,
+  `usua_id` int(11) NOT NULL COMMENT 'tareas de un usuario',
+  `tare_estado` varchar(50) NOT NULL,
+  `tare_fechainicio` timestamp NULL DEFAULT NULL,
+  `tare_fechafin` timestamp NULL DEFAULT NULL,
+  `tare_fechareinicio` timestamp NULL DEFAULT NULL,
+  `tare_fecharegistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tare_tiempoacumulado` bigint(20) DEFAULT NULL,
+  `tare_dias` int(11) DEFAULT NULL,
+  `tare_horas` int(11) DEFAULT NULL,
+  `tare_minutos` int(11) DEFAULT NULL,
+  `tare_segundos` int(11) DEFAULT NULL,
+  `tare_centesimas` int(11) DEFAULT NULL,
+  PRIMARY KEY (`tare_id`),
+  UNIQUE KEY `tare_codigo_UNIQUE` (`tare_codigo`),
+  KEY `fk_tarea_usuario_idx` (`usua_id`),
+  CONSTRAINT `fk_tarea_usuario` FOREIGN KEY (`usua_id`) REFERENCES `usuario` (`usua_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tarea`
+--
+
+LOCK TABLES `tarea` WRITE;
+/*!40000 ALTER TABLE `tarea` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tarea` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `nota`
+--
+
+DROP TABLE IF EXISTS `nota`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `nota` (
+  `nota_id` int(11) NOT NULL AUTO_INCREMENT,
+  `nota_nombre` varchar(200) NOT NULL,
+  `nota_descripcion` varchar(600) NOT NULL,
+  `tare_id` int(11) NOT NULL,
+  `tino_id` int(11) NOT NULL,
+  `nota_fecharegistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`nota_id`),
+  KEY `fk_nota_tiponota1_idx` (`tino_id`),
+  KEY `fk_nota_tarea1_idx` (`tare_id`),
+  CONSTRAINT `fk_nota_tarea1` FOREIGN KEY (`tare_id`) REFERENCES `tarea` (`tare_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_nota_tiponota1` FOREIGN KEY (`tino_id`) REFERENCES `tiponota` (`tino_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `nota`
+--
+
+LOCK TABLES `nota` WRITE;
+/*!40000 ALTER TABLE `nota` DISABLE KEYS */;
+/*!40000 ALTER TABLE `nota` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tiponota`
+--
+
+DROP TABLE IF EXISTS `tiponota`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tiponota` (
+  `tino_id` int(11) NOT NULL AUTO_INCREMENT,
+  `tino_nombre` varchar(45) NOT NULL,
+  `tino_editable` varchar(1) DEFAULT NULL,
+  PRIMARY KEY (`tino_id`),
+  UNIQUE KEY `tino_nombre_UNIQUE` (`tino_nombre`),
+  UNIQUE KEY `tino_editable_UNIQUE` (`tino_editable`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tiponota`
+--
+
+LOCK TABLES `tiponota` WRITE;
+/*!40000 ALTER TABLE `tiponota` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tiponota` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuario`
+--
+
+DROP TABLE IF EXISTS `usuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `usuario` (
+  `usua_id` int(11) NOT NULL AUTO_INCREMENT,
+  `usua_usuario` varchar(100) NOT NULL,
+  `usua_password` varchar(100) NOT NULL,
+  `usua_estado` varchar(1) NOT NULL,
+  `usua_fecharegistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'usuarios del sistema',
+  `usua_permiso` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`usua_id`),
+  UNIQUE KEY `usua_usuario_UNIQUE` (`usua_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES (1,'admin','1234','1','2017-06-24 05:00:00','ROLE_ADMIN'),(2,'pepe','1234','1','2017-06-26 05:00:00','ROLE_ADMIN');
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-06-26 21:17:24

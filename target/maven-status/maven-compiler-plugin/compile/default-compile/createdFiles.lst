@@ -1,0 +1,17 @@
+com\ceamce\salika\dao\GenericoDAO.class
+com\ceamce\salika\model\TareaVO.class
+com\ceamce\salika\controller\NotaController.class
+com\ceamce\salika\service\NotaService.class
+com\ceamce\salika\dao\TipoNotaDAOImp.class
+com\ceamce\salika\controller\IndexController.class
+com\ceamce\salika\dao\UsuarioDAOImp.class
+com\ceamce\salika\service\IndexService.class
+com\ceamce\salika\controller\UserController.class
+com\ceamce\salika\dao\TareaDAOImp.class
+com\ceamce\salika\model\UsuarioVO.class
+com\ceamce\salika\service\UserService.class
+com\ceamce\salika\config\CustomAuthenticationProvider.class
+com\ceamce\salika\config\CustomUserDetailsService.class
+com\ceamce\salika\dao\NotaDAOImp.class
+com\ceamce\salika\model\TipoNotaVO.class
+com\ceamce\salika\model\NotaVO.class

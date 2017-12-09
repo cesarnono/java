@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+          http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+">
+    <security:http use-expressions="true">      
+<!--        <security:intercept-url pattern="/" access="permitAll" />
+        <security:intercept-url pattern="/login" access="permitAll" />-->
+        <security:intercept-url pattern="/user/**" access="isAuthenticated() and hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/regtarea" access="isAuthenticated()" />
+        <security:intercept-url pattern="/pausarTarea" access="isAuthenticated()" />
+        <security:intercept-url pattern="/iniciarTarea" access="isAuthenticated()" />
+        <security:intercept-url pattern="/finalizarTarea" access="isAuthenticated()" />
+         <security:intercept-url pattern="/" access="isAuthenticated()" />
+        <security:intercept-url pattern="/listarTareaFinalizada" access="isAuthenticated()" />
+        <security:form-login login-page="/login" login-processing-url="/j_spring_security_check" />
+        <security:logout />
+        <security:csrf disabled="true"/>
+    </security:http>
+    <security:authentication-manager>
+        <security:authentication-provider ref="customAuthenticationProvider" />
+        <!--            <security:user-service>
+            <security:user name="admin" password="1234" authorities="ROLE_ADMIN"/>
+            <security:user name="user" password="1234" authorities="ROLE_USER"/>
+        </security:user-service>-->
+        
+    </security:authentication-manager>
+    
+    <bean id="customAuthenticationProvider" class="com.ceamce.salika.config.CustomAuthenticationProvider" />
+    <bean id="customUserDetailsService" class="com.ceamce.salika.config.CustomUserDetailsService"/>
+</beans>

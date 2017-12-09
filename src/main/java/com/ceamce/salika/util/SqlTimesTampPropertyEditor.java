@@ -1,0 +1,66 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.ceamce.salika.util;
+
+import java.beans.PropertyEditorSupport;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+/**
+ *
+ * @author Cesar Aguirre Vega
+ */
+public class SqlTimesTampPropertyEditor extends PropertyEditorSupport {
+
+    public static final String DEFAULT_BATCH_PATTERN = "yyyy-MM-dd";
+
+    private final SimpleDateFormat sdf;
+
+    /**
+     * uses default pattern yyyy-MM-dd for date parsing.
+     */
+    public SqlTimesTampPropertyEditor() {
+        this.sdf = new SimpleDateFormat(SqlTimesTampPropertyEditor.DEFAULT_BATCH_PATTERN);
+    }
+
+    /**
+     * Uses the given pattern for dateparsing, see {@link SimpleDateFormat} for
+     * allowed patterns.
+     *
+     * @param pattern the pattern describing the date and time format
+     * @see SimpleDateFormat#SimpleDateFormat(String)
+     */
+    public SqlTimesTampPropertyEditor(String pattern) {
+        this.sdf = new SimpleDateFormat(pattern);
+    }
+
+    /**
+     * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
+     */
+    @Override
+    public void setAsText(String text) throws IllegalArgumentException {
+
+        try {
+            if (text != null && !text.equals("")) {
+                setValue(new Timestamp(this.sdf.parse(text).getTime()));
+            }else{
+                setValue(null);
+            }
+        } catch (ParseException ex) {
+            throw new IllegalArgumentException("Could not parse date: " + ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Format the Timestamp as String, using the specified DateFormat.
+     */
+    @Override
+    public String getAsText() {
+        Timestamp value = (Timestamp) getValue();
+        return (value != null ? this.sdf.format(value) : "");
+    }
+}
